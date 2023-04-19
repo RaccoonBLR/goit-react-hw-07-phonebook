@@ -1,17 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 import { AiOutlineUser } from 'react-icons/ai';
 import { FiSmartphone } from 'react-icons/fi';
-
-import { nanoid } from 'nanoid';
 
 import { Button, Label, Input } from './ContactForm.styled';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleAppend = newContact => {
     const { name: newName } = newContact;
@@ -23,9 +21,11 @@ export const ContactForm = () => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    const name = evt.target.elements.name.value;
-    const number = evt.target.elements.number.value;
-    const newContact = { name, number, id: nanoid() };
+
+    const newContact = {
+      name: evt.target.elements.name.value,
+      number: evt.target.elements.number.value,
+    };
 
     handleAppend(newContact);
 

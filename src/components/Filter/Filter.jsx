@@ -1,7 +1,5 @@
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-
-import { getFilterValue } from 'redux/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectFilterValue } from 'redux/selectors';
 import { setFilterValue } from 'redux/filterSlice';
 
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -10,7 +8,7 @@ import { Label, Wrapper, Input } from './Filter.styled';
 
 export const Filter = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(getFilterValue);
+  const filter = useSelector(selectFilterValue);
 
   const onChange = evt => {
     const { value } = evt.currentTarget;

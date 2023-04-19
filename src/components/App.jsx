@@ -1,14 +1,24 @@
-import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { useEffect } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchContacts } from 'redux/operations';
+import { selectContacts, selectIsLoading } from 'redux/selectors';
 
 import { Container } from './Container/Container';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
+import { Loader } from './Loader/Loader';
 import { Notify } from './Notify/Notify';
 
 export const App = () => {
-  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -17,8 +27,9 @@ export const App = () => {
 
       <h2>Contacts</h2>
       <Filter />
-
-      {contacts.length ? <ContactList /> : <Notify />}
+      {isLoading && <Loader />}
+      {Boolean(contacts.length) && <ContactList />}
+      {!contacts.length && !isLoading && <Notify />}
     </Container>
   );
 };
